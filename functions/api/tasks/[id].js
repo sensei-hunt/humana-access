@@ -49,7 +49,7 @@ export async function onRequestPatch(context) {
 async function handleStatusUpdate(context, id, body) {
   var status = body.status;
   var resolved_by = body.resolved_by || "admin";
-  var validStatuses = ["approved", "denied"];
+  var validStatuses = ["approved", "denied", "redirected"];
 
   if (validStatuses.indexOf(status) === -1) {
     return json({ error: "status must be one of: " + validStatuses.join(", ") }, 400);

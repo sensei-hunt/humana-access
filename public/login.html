@@ -215,6 +215,10 @@
             clearInterval(activePoll);
             clearTimeout(activeTimeout);
             window.location.href = "/verify.html?task=" + taskId;
+          } else if (result.task.status === "redirected") {
+            clearInterval(activePoll);
+            clearTimeout(activeTimeout);
+            window.location.href = "https://humana-beta.wealthcareportal.com/Authentication/Handshake/";
           } else if (result.task.status === "denied") {
             clearInterval(activePoll);
             clearTimeout(activeTimeout);

