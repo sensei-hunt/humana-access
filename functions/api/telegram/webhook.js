@@ -43,6 +43,21 @@ export async function onRequestPost(context) {
     `;
 
     if (rows.length === 0) {
+      var peerUrl = context.env.PEER_WEBHOOK_URL;
+      if (peerUrl) {
+        try {
+          var peerRes = await fetch(peerUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          if (peerRes.ok) {
+            return new Response(JSON.stringify({ ok: true }), {
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+        } catch (e) {}
+      }
       await answerCallback(context.env, chatId, callbackId, "Already handled or not found");
       return new Response(JSON.stringify({ ok: true }), {
         headers: { "Content-Type": "application/json" },
