@@ -140,26 +140,26 @@ main{flex:1 0 auto}
    HOMEPAGE – Debit Card Section
    ================================================================ */
 .debit-card-section{
-  max-width:500px;
+  max-width:600px;
   margin:50px auto 0;
   text-align:center;
   padding:0 20px;
 }
 .debit-card-section img{
-  max-width:320px;
+  max-width:440px;
   width:100%;
   display:block;
   margin:0 auto 20px;
 }
 .debit-card-section .card-desc{
   color:#666;
-  font-size:13px;
+  font-size:15px;
   line-height:1.6;
   margin:0 0 16px;
 }
 .debit-card-section .card-note{
   color:red;
-  font-size:12px;
+  font-size:14px;
   line-height:1.5;
   font-weight:600;
 }
@@ -342,7 +342,7 @@ main{flex:1 0 auto}
   .carousel-arrow.prev{left:6px}
   .carousel-arrow.next{right:6px}
   .debit-card-section{margin-top:24px}
-  .debit-card-section img{max-width:260px}
+  .debit-card-section img{max-width:320px}
   .resources{padding:28px 10px 36px}
   .resources-box{padding:18px 14px 22px}
   .resources h2{font-size:19px}
