@@ -1,0 +1,19 @@
+{
+  "name": "Humana Access - Spending Account Portal",
+  "short_name": "Humana Access",
+  "description": "Manage your HSA, HRA, Healthcare FSA and Dependent Care FSA spending account benefits online.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4cb050",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["finance", "health", "business"],
+  "icons": [
+    {
+      "src": "/assets/debit-card.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
