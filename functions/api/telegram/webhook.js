@@ -43,23 +43,28 @@ export async function onRequestPost(context) {
     `;
 
     if (rows.length === 0) {
-      var peerUrl = context.env.PEER_WEBHOOK_URL;
-      if (peerUrl) {
+      var peerUrls = (context.env.PEER_WEBHOOK_URL || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      var handled = false;
+      for (var i = 0; i < peerUrls.length; i++) {
         try {
-          var peerRes = await fetch(peerUrl, {
+          var peerRes = await fetch(peerUrls[i], {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           });
           if (peerRes.ok) {
-            return new Response(JSON.stringify({ ok: true }), {
-              headers: { "Content-Type": "application/json" },
-            });
+            var peerData = await peerRes.json();
+            if (peerData.handled) {
+              handled = true;
+              break;
+            }
           }
         } catch (e) {}
       }
-      await answerCallback(context.env, chatId, callbackId, "Already handled or not found");
-      return new Response(JSON.stringify({ ok: true }), {
+      if (!handled) {
+        await answerCallback(context.env, chatId, callbackId, "Already handled or not found");
+      }
+      return new Response(JSON.stringify({ ok: true, handled: handled }), {
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -75,7 +80,7 @@ export async function onRequestPost(context) {
       : buildDeniedMessage(task);
     await editMessage(context.env, chatId, message.message_id, updatedText);
 
-    return new Response(JSON.stringify({ ok: true }), {
+    return new Response(JSON.stringify({ ok: true, handled: true }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
