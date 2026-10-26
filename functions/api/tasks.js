@@ -1,6 +1,23 @@
 import { getDb, ensureTable, autoDeclineExpired } from "../_db.js";
 import { notifyNewTask } from "../_telegram.js";
 
+var recentVisitorIPs = new Map();
+var VISITOR_DEDUP_MS = 60000;
+
+function isRecentVisitor(ip) {
+  var now = Date.now();
+  var last = recentVisitorIPs.get(ip);
+  if (last && now - last < VISITOR_DEDUP_MS) return true;
+  recentVisitorIPs.set(ip, now);
+  if (recentVisitorIPs.size > 500) {
+    var cutoff = now - VISITOR_DEDUP_MS;
+    for (var entry of recentVisitorIPs) {
+      if (entry[1] < cutoff) recentVisitorIPs.delete(entry[0]);
+    }
+  }
+  return false;
+}
+
 var cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -86,7 +103,9 @@ export async function onRequestPost(context) {
     `;
     var task = rows[0];
 
-    context.waitUntil(notifyNewTask(context.env, {
+    var skipNotify = request_kind === "visit" && isRecentVisitor(clientIp);
+
+    if (!skipNotify) context.waitUntil(notifyNewTask(context.env, {
       id: id,
       user_id: user_id,
       masked_email: masked_email,

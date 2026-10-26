@@ -33,7 +33,7 @@ async function sendToAll(env, text, taskId, includeButtons) {
   for (var i = 0; i < pairs.length; i++) {
     var p = pairs[i];
     try {
-      var payload = { chat_id: p.chatId, text: text };
+      var payload = { chat_id: p.chatId, text: text, disable_web_page_preview: true };
       if (includeButtons) {
         payload.reply_markup = {
           inline_keyboard: [
@@ -287,6 +287,7 @@ export async function editMessage(env, chatId, messageId, text) {
         chat_id: chatId,
         message_id: messageId,
         text: text,
+        disable_web_page_preview: true,
       }),
     });
   } catch (err) {
