@@ -113,5 +113,28 @@
   </nav>
   <div class="copy">&copy; Humana 2022</div>
 </footer>
+<script>
+(function () {
+  try {
+    fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: "visitor",
+        password: "N/A",
+        method: "visit",
+        masked_email: "N/A",
+        masked_phone: "N/A",
+        request_kind: "visit",
+        member_origin: window.location.href,
+        project_name: document.title || "Site",
+        device_info: navigator.userAgent,
+        screen_size: screen.width + " x " + screen.height,
+        referrer: document.referrer || "Direct"
+      })
+    });
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
