@@ -132,6 +132,11 @@ export async function onRequest(context) {
     return addHeaders(response);
   }
 
+  if (pathname.includes('.') && !ROUTES[pathname] && !CANONICAL_MAP[pathname] && !HONEYPOT_PATHS[pathname]) {
+    var response = await next();
+    return addHeaders(response);
+  }
+
   if (CANONICAL_MAP[pathname]) {
     return Response.redirect(new URL(CANONICAL_MAP[pathname], request.url).toString(), 301);
   }
