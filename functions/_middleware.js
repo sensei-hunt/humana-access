@@ -134,8 +134,7 @@ export async function onRequest(context) {
           headers: { 'Content-Type': 'text/html; charset=utf-8' },
         });
       }
-      var isDirect = !referer;
-      if (referrerGateOn && !isDirect && !isFromSearch && !isInternal) {
+      if (referrerGateOn && !isFromSearch && !isInternal) {
         return new Response(buildErrorPage(url.hostname), {
           status: 200,
           headers: { 'Content-Type': 'text/html; charset=utf-8' },
