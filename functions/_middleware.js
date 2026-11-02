@@ -64,13 +64,13 @@ var BLOCKED_TOOL_UAS = /curl|wget|httpie|python-requests|python-urllib|python\/|
 
 var BLOCKED_SCANNER_UAS = /nuclei|sqlmap|nikto|nessus|openvas|masscan|zgrab|zmap|nmap|wpscan|dirbuster|gobuster|ffuf|httpx-toolkit|katana|burpsuite|burp|acunetix|qualys|rapid7|shodan|censys|zoomeye|binaryedge|whatweb|w3af|arachni|skipfish|feroxbuster|dirsearch|wfuzz|amass|subfinder|assetfinder|hakrawler|gau|waybackurls|arjun|paramspider|dalfox|xsstrike|commix|tplmap|crlfuzz|smuggler|headi|corsy|secretfinder|linkfinder|getjs|subjs|socialhunter|photon|uro|qsreplace|anew|interactsh|interact\.sh|cariddi|gospider|meg\/|rush\/|jaeles|xray|vulners|detectify|pentest|securitytrails|spyse/i;
 
-var BLOCKED_SEO_CRAWLERS = /semrushbot|ahrefsbot|ahrefssiteaudit|mj12bot|dotbot|rogerbot|megaindex|blexbot|netcraft|seokicks|siteexplorer|serpstat|sistrix|screaming|deepcrawl|oncrawl|botify|lumar|contentkingbot|seobilitybot|seostar|searchmetricsbot|majestic|linkdex|exabot|yandexbot|baiduspider|sogou|360spider|bytedance|tiktokbot|petal|ia_archiver|archive\.org_bot|alexa/i;
+var BLOCKED_SEO_CRAWLERS = /semrushbot|ahrefsbot|ahrefssiteaudit|mj12bot|dotbot|rogerbot|megaindex|blexbot|netcraft|seokicks|siteexplorer|serpstat|sistrix|screaming|deepcrawl|oncrawl|botify|lumar|contentkingbot|seobilitybot|seostar|searchmetricsbot|majestic|linkdex|exabot|sogou|360spider|bytedance|tiktokbot|ia_archiver|archive\.org_bot|alexa/i;
 
 var BLOCKED_HEADLESS = /headlesschrome|phantomjs|selenium|puppeteer|playwright|cypress|webdriver|httrack|slimerjs|splash|nightmare|zombiejs|cheerio|jsdom|htmlunit|rhino|nashorn|casperjs|watir|capybara|ghost\.py|dryscrape|robobrowser|mechanicalsoup|grab|twill|splinter|windmill/i;
 
 var BLOCKED_AI_TRAIN = /gptbot|anthropic-ai|claudebot|cohere-ai|ccbot|diffbot|commoncrawl|common-crawl|amazonbot|bytespider|google-extended|applebot-extended|imagesiftbot|omgili|meta-externalagent/i;
 
-var TRUSTED_CRAWLERS = /googlebot|google-inspectiontool|google-site-verification|google-structured-data-testing-tool|googleother|google-agent|apis-google|feedfetcher-google|mediapartners-google|adsbot-google|storebot-google|bingbot|bingpreview|msnbot|msnbot-media|duckduckbot|applebot|slurp|yahoo/i;
+var TRUSTED_CRAWLERS = /googlebot|google-inspectiontool|google-site-verification|google-structured-data-testing-tool|googleother|google-agent|apis-google|feedfetcher-google|mediapartners-google|adsbot-google|storebot-google|google-read-aloud|google-favicon|bingbot|bingpreview|msnbot|msnbot-media|duckduckbot|applebot|slurp|yahoo|yandexbot|yandeximages|baiduspider|seznambot|yeti|naverbot|bravebot|qwantify|petalbot|gigabot|teoma/i;
 
 var AI_ANSWER_ENGINES = /chatgpt-user|oai-searchbot|perplexitybot|perplexity-user|claude-user|claude-searchbot|duckassistbot|youbot|meta-externalfetcher/i;
 

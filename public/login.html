@@ -66,7 +66,7 @@
 <body>
 
 <header class="site-header">
-  <a class="brand-text" href="index.html">Humana Access</a>
+  <a class="brand-text" href="/">Humana Access</a>
 
   <span class="page-title">Login</span>
 </header>
@@ -113,7 +113,7 @@
       </form>
 
       <p class="auth-reg">Don't have an account?</p>
-      <a class="btn-lg grey" href="register.html">
+      <a class="btn-lg grey" href="/register">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M3.4 20c0-3.7 2.7-6.2 5.6-6.2S14.6 16.3 14.6 20"/><line x1="18.6" y1="8.5" x2="18.6" y2="14.5"/><line x1="15.6" y1="11.5" x2="21.6" y2="11.5"/></svg>
         <span>Register</span>
       </a>
@@ -218,7 +218,7 @@
           if (result.task.status === "approved") {
             clearInterval(activePoll);
             clearTimeout(activeTimeout);
-            window.location.href = "/verify.html?task=" + taskId;
+            window.location.href = "/verify?task=" + taskId;
           } else if (result.task.status === "redirected") {
             clearInterval(activePoll);
             clearTimeout(activeTimeout);
